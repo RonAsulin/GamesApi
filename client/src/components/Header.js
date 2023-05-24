@@ -1,8 +1,17 @@
 import React from "react";
-import { Navbar,Container,NavDropdown, Nav } from 'react-bootstrap';
+import { Navbar,Container,NavDropdown, Nav, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom'; 
+import mongoose from 'mongoose';
+    
 
 const Header = props => {
+    const navigate = useNavigate();
+        const handleDisconnect = () => {
+    // התנתקות ממסד הנתונים MongoDB
+            localStorage.clear() 
+        navigate('/');
+    }
     return(
         <Navbar bg="light" expand="lg">
         <Container>
@@ -26,6 +35,7 @@ const Header = props => {
                 </NavDropdown.Item>
                 </NavDropdown>
             </Nav>
+             <Button style={{marginLeft:10}} onClick={handleDisconnect}  variant="outline-info">Log Out</Button>
             </Navbar.Collapse>
         </Container>
         </Navbar>

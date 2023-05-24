@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+
 const Login = props => {
 
     const baseURL = "http://localhost:3001/api";
@@ -86,13 +87,16 @@ const Login = props => {
                 const remail = localStorage.getItem("vdata");
                 const verify = {
                     email: JSON.parse(remail),
-                    verficationCode: code
+                    verficationCode: code,
+                    isVerified:true
                 }
+                
 
 
                 axios.put(baseURL + '/account/verifyAccount',{verify})
                 .then(results => {
                     toast.success(`Welcome ${results.data.message.firstName}`)
+                     navigate('/dashboard');
                 })
                 .catch(error => {
                     toast.error(error.response.data.message);
@@ -103,6 +107,7 @@ const Login = props => {
                 toast.error("You didnt type any code");
             }
         }
+
 
     return(
         
