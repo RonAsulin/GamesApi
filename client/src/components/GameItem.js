@@ -7,7 +7,7 @@ const GameItem = props => {
     const baseURL = 'http://localhost:3001/api';
     const [isEditable, setIsEditable] = useState(false);
     const [gameName, setGameName] = useState(props.game.gameName);
-    const [gamePrice, setGamePrice] = useState(props.game.gamePrice);
+    const [gamePrice, setGamePrice] = useState(props.game.gamePrice)
 
     const updateGame = async() => {
 
@@ -27,6 +27,7 @@ const GameItem = props => {
           setIsEditable(false);
           props.loadAllGames();
     }
+
 
     return (
        <>
@@ -65,6 +66,7 @@ const GameItem = props => {
                     <Card.Title style={{fontSize:15}}>{props.game.gameName}</Card.Title>
                     <Card.Text>Genre: {props.game.genreId.genreName}</Card.Text>
                     <Card.Text><b style={{fontSize:24}}>${props.game.gamePrice}</b></Card.Text>
+                    
                     <Container>
                         <Row>
                             <Col>
@@ -75,6 +77,7 @@ const GameItem = props => {
                             </Col>
                         </Row>
                     </Container>
+       
                 </Card.Body>
                 </Card>
                 </>
