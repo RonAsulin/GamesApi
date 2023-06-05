@@ -23,6 +23,7 @@ const Header = props => {
             <Nav className="me-auto">
                 <Nav.Link href="/dashboard">Home</Nav.Link>
                 <Nav.Link href="/manager">Management</Nav.Link>
+                <Nav.Link href="/cart">Cart</Nav.Link>
             </Nav>
              <Button style={{marginLeft:10}} onClick={handleDisconnect}  variant="outline-info">Log Out</Button>
             </Navbar.Collapse>

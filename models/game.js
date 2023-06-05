@@ -8,7 +8,15 @@ const gameSchema = new Schema({
     gamePrice: Number,
     isAvailable: {type:Boolean, default:true},
     gameDescription: String,
-    gameImage: String
+    gameImage: String,
+    comments:[
+    {
+        content:{type:String},
+        author :{ type: String },
+        date :{ type: Date }
+    }
+]
+    
 
 })
 

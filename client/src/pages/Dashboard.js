@@ -1,34 +1,16 @@
-// import React, {useState} from "react";
-// import { Button, Container, Row, Col, Form, Card, Table, Modal } from "react-bootstrap";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import Header from '../components/Header';
-// import { FcPlus, FcEditImage } from "react-icons/fc";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// import moment from 'moment';
-// import RowEdit from "../components/RowEdit";
-// import { NavLink } from 'react-router-dom';
-// import { VscChevronRight } from "react-icons/vsc";
-
-
 import React, { useState, useEffect } from "react";
-import { Button, Container, Row, Col, Form, Card } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import Header from "../components/Header";
 import GameItem from "../components/GameHome";
-
+import SearchFilter from "../components/SearchFilter";
 import axios from 'axios';
-
 function Dashboard() {
   const baseURL = "http://localhost:3001/api";
   const [games, setAllGames] = useState([]);
   const [genres, setAllGenres] = useState([]);
-
- 
-
 
 
   const loadAllGames = async () => {
@@ -49,16 +31,28 @@ function Dashboard() {
     loadAllGames();
     loadGenres();
   }, []);
+   const handleFilterSubmit = (filters) => {
+    // Perform filtering based on the submitted filters
+    // You can update the games state with the filtered results
+    // For example:
+    const filteredGames = games.filter((game) => {
+      // Filter by game name
+      const isNameMatch = game.gameName.toLowerCase().includes(filters.searchQuery.toLowerCase());
+      // Filter by price range
+      const isPriceMatch = game.gamePrice >= filters.priceRange.min && game.gamePrice <= filters.priceRange.max;
+      // Filter by genre
+      const isGenreMatch = filters.genreFilter === "" || game.genreId.genreName === filters.genreFilter;
 
- 
+      return isNameMatch && isPriceMatch && isGenreMatch;
+    });
 
- 
-
-
-
- 
+    // Update the games state with the filtered results
+    setAllGames(filteredGames);
+  };
+    const handleReset = () => {
+    loadAllGames();
+  };
   
-
 
   return (
     <>
@@ -66,8 +60,9 @@ function Dashboard() {
       <Header />
        <h1 style={{fontSize:70,textAlign:'center',marginTop:15,color:'#ffff'}}>Games</h1>
     <Container  >
-
-
+          <SearchFilter genres={genres} onFilterSubmit={handleFilterSubmit} onReset={handleReset} />
+        
+          
       <Row style={{ marginTop: 100 }}>
 
 
@@ -78,8 +73,6 @@ function Dashboard() {
               games.map((item) => (
                 <Col xl={6} xs={12}>
                   <GameItem
-                
-
                     game={item}
                     loadAllGames={loadAllGames}
                   />
@@ -95,7 +88,6 @@ function Dashboard() {
      </>
   );
 }
- 
 
 export default Dashboard;
 
