@@ -15,30 +15,15 @@ const nav = async () => {
   navigate('/viewGame', {
     state: {
       gameName: props.game.gameName,
-      _id: props.game._id,
-      gamePrice: props.game.gamePrice
+      gamePrice: props.game.gamePrice,
+      genreName:props.game.genreId.genreName,
+      gameDescription:props.game.gameDescription,
+      gameImage:props.game.gameImage
     }
   });
 };
-    const updateGame = async() => {
 
-        const response = await fetch(baseURL + "/updateGame/" + props.game._id, {
-            method: 'PUT',
-            headers: {'Content-Type' : 'application/json'},
-            body: JSON.stringify({
-                gameName: gameName,
-                gamePrice: gamePrice,
-                isAvailable: props.game.isAvailable,
-                genreId: props.game.genreId,
-                gameDescription: props.game.gameDescription,
-                gameImage: props.game.gameImage
-            })
-          });
-          const data = await response.json();
-          setIsEditable(false);
-          props.loadAllGames();
-    }
-
+   
 
 
     return (

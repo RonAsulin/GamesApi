@@ -9,6 +9,7 @@ const gameSchema = new Schema({
     isAvailable: {type:Boolean, default:true},
     gameDescription: String,
     gameImage: String
+
 })
 
 export default mongoose.model('Game', gameSchema);
