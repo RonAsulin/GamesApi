@@ -2,9 +2,10 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 import mongoose from 'mongoose';
-import actions from './actions.js';
+import actions from './controllers/actions.js';
 import cors from 'cors';
 import accountController from './controllers/account.js';
+//import games from './controllers/games';
 
 const app = express();
 
@@ -16,6 +17,8 @@ const port = process.env.PORT;
 
 app.use('/api', actions);
 app.use('/api/account', accountController);
+//app.use('/api/games', games);
+
 
 mongoose.connect(process.env.MONGO_URL)
 .then(results => {

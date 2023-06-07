@@ -1,8 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 const router = express.Router();
-import Game from './models/game.js';
-import Genre from './models/genre.js';
+import Game from '../models/game.js';
+import Genre from '../models/genre.js';
 
 
 router.post('/createGame', async(req,res) => {
@@ -19,6 +19,26 @@ router.post('/createGame', async(req,res) => {
         gameImage: gameImage
     })
     _newgame.save()
+    .then(results => {
+        return res.status(200).json({
+            message: results
+        })
+    })
+    .catch(error => {
+        return res.status(500).json({
+            message: error.message
+        })
+    })
+})
+router.post('/createComment', async(req,res) => {
+
+    const {comments} = req.body;
+   
+
+    const _newcomment = new Game({
+        comments:comments
+    })
+    _newcomment.save()
     .then(results => {
         return res.status(200).json({
             message: results
@@ -160,6 +180,7 @@ router.get('/readGamesByGenre/:genId', async(req,res) => {
         })
     })
 })
+
 
 
 export default router;

@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 //IMPORT SCREENS
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";

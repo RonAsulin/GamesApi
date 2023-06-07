@@ -4,7 +4,8 @@ import mongoose from 'mongoose';
 import Account from '../models/account.js';
 import bcryptjs from 'bcryptjs'; //Password crypt
 import jwt from 'jsonwebtoken'; //Manage TOKENS
-
+import dotenv from 'dotenv'
+dotenv.config()
 
 router.post('/createAccount', async(req,res) => {
 
@@ -63,7 +64,8 @@ router.post('/login', async(req,res) => {
                     _id: account._id,
                     firstName: account.firstName,
                     lastName: account.lastName,
-                    email: account.email
+                    email: account.email,
+                    isAdmin:account.isAdmin
                 }
                 const token = await jwt.sign({dataTotoken}, process.env.JWT_KEY);
                 return res.status(200).json({
@@ -85,6 +87,27 @@ router.post('/login', async(req,res) => {
             message: error.message
         })
     })
+})
+//Bearer hello
+router.get('/admin',async(req,res)=>{
+    if(!req.headers.authorization)
+        return res.status(401).json({error: "error"})
+    const auth = req.headers.authorization.split(' ')
+    if(auth.length !== 2 || auth[0] != 'Bearer')
+        return res.status(401).json({error: "error"})
+    jwt.verify(auth[1], process.env.JWT_KEY, (err, payload) => {
+        
+        if(err)
+            return res.status(401).json({error: "unauthorized"})
+        const {isAdmin} = payload.dataTotoken
+        console.log(payload.dataTotoken);
+        if(isAdmin)
+            res.status(200).json({status: "in"})
+
+        else
+            res.status(403).json({error: "forbidden"})
+    })
+    
 })
 
 router.put('/verifyAccount', async(req,res) => {

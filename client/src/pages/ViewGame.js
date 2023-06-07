@@ -4,28 +4,27 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLocation } from "react-router-dom";
-
 import axios from "axios";
 
-export default function ViewGame(props) {
+export default function ViewGame() {
   const location = useLocation();
-  const { gameName, gamePrice, genreName, gameDescription, gameImage, comments } =
-    location.state;
-
+  const { gameName, gamePrice, genreName, gameDescription, gameImage, _id } = location.state;
+  const baseURL = "http://localhost:3001/api";
   const [newComment, setNewComment] = useState("");
   const [allComments, setAllComments] = useState([]);
 
   useEffect(() => {
     // Fetch existing comments or set initial comments here
     // For example:
-    // axios.get("/api/comments")
-    //   .then((response) => {
-    //     setAllComments(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-  }, []);
+    axios
+      .get(baseURL + "/comments", { params: { gameId: _id } })
+      .then((response) => {
+        setAllComments(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [_id]);
 
   const handleCommentChange = (e) => {
     setNewComment(e.target.value);
@@ -35,14 +34,19 @@ export default function ViewGame(props) {
     if (newComment.trim() !== "") {
       // Save new comment to the backend
       // For example:
-      // axios.post("/api/comments", { content: newComment })
-      //   .then((response) => {
-      //     setAllComments([...allComments, response.data]);
-      //     setNewComment("");
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
+      axios
+        .post(baseURL + "/createComment", {
+          gameId: _id,
+          content: newComment,
+          author: "John Doe",
+        })
+        .then((response) => {
+          setAllComments([...allComments, response.data]);
+          setNewComment("");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   };
 
@@ -50,30 +54,30 @@ export default function ViewGame(props) {
     <Container style={{ justifyContent: "center", alignItems: "center" }}>
       <Row>
         <Col sm={12} md={6}>
-
-        <div style={{ color: "#ffff", marginTop: "50%", display: "grid", gap: "10px" }}>
+          <div style={{ color: "#ffff", marginTop: "50%", display: "grid", gap: "10px" }}>
             <h1 style={{ fontSize: "32px" }}>Game Details</h1>
             <table>
-              <tr>
-                <td style={{ fontSize: "24px" }}>Game Name:</td>
-                <td style={{ fontSize: "24px" }}>{gameName}</td>
-              </tr>
-              <tr>
-                <td style={{ fontSize: "24px" }}>Price:</td>
-                <td style={{ fontSize: "24px" }}>${gamePrice}</td>
-              </tr>
-              <tr>
-                <td style={{ fontSize: "24px" }}>Genre:</td>
-                <td style={{ fontSize: "24px" }}>{genreName}</td>
-              </tr>
-              <tr>
-                <td style={{ fontSize: "24px" }}>Description:</td>
-                <td style={{ fontSize: "24px" }}>{gameDescription}</td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td style={{ fontSize: "24px" }}>Game Name:</td>
+                  <td style={{ fontSize: "24px" }}>{gameName}</td>
+                </tr>
+                <tr>
+                  <td style={{ fontSize: "24px" }}>Price:</td>
+                  <td style={{ fontSize: "24px" }}>${gamePrice}</td>
+                </tr>
+                <tr>
+                  <td style={{ fontSize: "24px" }}>Genre:</td>
+                  <td style={{ fontSize: "24px" }}>{genreName}</td>
+                </tr>
+                <tr>
+                  <td style={{ fontSize: "24px" }}>Description:</td>
+                  <td style={{ fontSize: "24px" }}>{gameDescription}</td>
+                </tr>
+              </tbody>
             </table>
 
-
-            <div>   
+            <div>
               <h2>Comments</h2>
               {allComments.length > 0 ? (
                 allComments.map((comment, index) => (
