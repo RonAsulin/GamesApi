@@ -43,6 +43,7 @@ function SearchFilter({ genres, onFilterSubmit, onReset }) {
   };
 
   return (
+    <div style={{width:'91.5%',marginBottom:20}}>
     <Form onSubmit={handleSubmit}>
       <Row>
         <Col>
@@ -88,6 +89,7 @@ function SearchFilter({ genres, onFilterSubmit, onReset }) {
         </Col>
       </Row>
     </Form>
+    </div>
   );
 }
 

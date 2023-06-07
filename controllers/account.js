@@ -6,6 +6,7 @@ import bcryptjs from 'bcryptjs'; //Password crypt
 import jwt from 'jsonwebtoken'; //Manage TOKENS
 import dotenv from 'dotenv'
 dotenv.config()
+import Game from '../models/game.js'
 
 router.post('/createAccount', async(req,res) => {
 
@@ -138,6 +139,56 @@ router.put('/verifyAccount', async(req,res) => {
         })
     })
 })
+
+router.get('/comments', async (req, res) => {
+  try {
+    const game = await Game.findById(req.query.gameId);
+    if (!game) {
+      return res.status(404).json({ error: 'Game not found' });
+    }
+
+    // Perform authorization check here
+    if (!req.headers.authorization) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Continue with the rest of the code if the user is authorized
+    res.status(200).json(game.comments);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.post('/createComment', async (req, res) => {
+  const { gameId, content, author } = req.body;
+
+  try {
+    const game = await Game.findById(gameId);
+    if (!game) {
+      return res.status(404).json({ error: 'Game not found' });
+    }
+
+    // Perform authorization check here
+    if (!req.headers.authorization) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const newComment = {
+      content: content,
+      author: author,
+      date: new Date().toISOString(),
+    };
+
+    game.comments.push(newComment);
+    await game.save();
+
+    res.status(200).json({ data: newComment });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 

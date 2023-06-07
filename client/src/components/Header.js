@@ -38,7 +38,7 @@ const Header = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/dashboard">
           <img src="../../logo.png" style={{ width: 140 }} alt="Logo" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -48,6 +48,7 @@ const Header = () => {
             {isAdmin && <Nav.Link href="/manager">Management</Nav.Link>}
             <Nav.Link href="/cart">Cart</Nav.Link>
           </Nav>
+          
           <Button
             style={{ marginLeft: 10 }}
             onClick={handleDisconnect}
